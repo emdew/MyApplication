@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">My Application</string>
+
+
+    <!-- navigation drawer -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="initial_total_value">0</string>
+
+    <!-- labels for ListPreferences -->
+    <string name="pref_sort_order">Sort Order</string>
+    <string name="pref_label_most_popular">Most Popular</string>
+    <string name="pref_label_highest_rated">Highest Rated</string>
+
+    <!-- key name for sort preference in SharedPreferences [CHAR LIMIT=NONE] -->
+    <string name="sort_order_key" translatable="false">sortOrder</string>
+    <!-- value in SharedPreferences for most popular option-->
+    <string name="pref_most_popular_key" translatable="false">popular</string>
+    <!-- value in SharedPreferences for highest rated option [CHAR LIMIT=NONE] -->
+    <string name="pref_highest_rated_key" translatable="false">top_rated</string>
+
+    <!-- Radio Button Strings -->
+    <string name="groceries">groceries</string>
+    <string name="going_out">going out</string>
+    <string name="coffee">coffee shop</string>
+</resources>
