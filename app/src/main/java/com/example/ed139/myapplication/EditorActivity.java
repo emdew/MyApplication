@@ -1,5 +1,6 @@
 package com.example.ed139.myapplication;
 
+import android.app.Activity;
 import android.arch.lifecycle.LiveData;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -62,17 +63,20 @@ public class EditorActivity extends AppCompatActivity {
     // onClick
     public void saveReceipt(View view) {
 
-        //int categoryId = listView.getCheckedItemPosition();
-        //int categoryId = userCreatedList.get(currentPosition);
+        // checked id and name from checked id
+        int categoryId = listView.getCheckedItemPosition();
+        String categoryName = userCreatedList.get(categoryId);
+
         String location = mLocationET.getText().toString();
         Long price = Long.parseLong(mPriceET.getText().toString());
 
         // save receipt
-        final ReceiptEntity receiptEntity = new ReceiptEntity(price, location);
+        final ReceiptEntity receiptEntity = new ReceiptEntity(price, location, categoryName);
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
                 mDb.receiptDao().insertReceipt(receiptEntity);
+                setResult(Activity.RESULT_OK);
                 finish();
             }
         });

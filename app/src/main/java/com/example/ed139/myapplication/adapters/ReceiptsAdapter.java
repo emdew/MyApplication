@@ -17,7 +17,7 @@ import java.util.List;
 public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.ViewHolder>{
 
     // Member variable to handle item clicks
-    //final private ItemClickListener mItemClickListener;
+    // final private ItemClickListener mItemClickListener;
     private List<ReceiptEntity> mReceiptsList;
     Context mContext;
 

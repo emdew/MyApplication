@@ -1,5 +1,6 @@
 package com.example.ed139.myapplication;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,6 +22,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private DrawerLayout drawer;
     AppDatabase mDb;
+    //place in shared location
+    int MYACTIVITY_REQUEST_CODE = 101;
+    NavigationView mNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +37,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mDb = AppDatabase.getInstance((this.getApplicationContext()));
 
         drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView = findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
 
         // toggle for the drawer
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -48,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new TodayFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_today);
+            mNavigationView.setCheckedItem(R.id.nav_today);
         }
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -65,9 +69,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                    Toast.makeText(MainActivity.this, "Sorry! You don't have a camera app.", Toast.LENGTH_SHORT).show();
 //                }
                 Intent intent = new Intent(MainActivity.this, EditorActivity.class);
-                MainActivity.this.startActivity(intent);
+                startActivityForResult(intent, MYACTIVITY_REQUEST_CODE);
+                //MainActivity.this.startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if ((requestCode == MYACTIVITY_REQUEST_CODE) && (resultCode == Activity.RESULT_OK))
+            //adapter.notifyDataSetChanged();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new TodayFragment()).commit();
+            mNavigationView.setCheckedItem(R.id.nav_today);
     }
 
     @Override

@@ -7,7 +7,7 @@ import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 import android.util.Log;
 
-@Database(entities = {CategoryModel.class, ReceiptEntity.class}, version = 8, exportSchema = false)
+@Database(entities = {CategoryModel.class, ReceiptEntity.class}, version = 9, exportSchema = false)
 @TypeConverters({ArrayListTypeConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
 

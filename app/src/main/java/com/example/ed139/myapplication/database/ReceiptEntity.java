@@ -12,7 +12,7 @@ public class ReceiptEntity {
     private int id;
 
     // category id
-    public int categoryId;
+    public String categoryName;
 
     // price
     private Long price;
@@ -21,16 +21,17 @@ public class ReceiptEntity {
     private String location;
 
     @Ignore
-    public ReceiptEntity(Long price, String location) {
+    public ReceiptEntity(Long price, String location, String categoryName) {
         this.price = price;
         this.location = location;
+        this.categoryName = categoryName;
     }
 
-    public ReceiptEntity(int id, Long price, String location, int categoryId) {
+    public ReceiptEntity(int id, Long price, String location, String categoryName) {
         this.id = id;
         this.price = price;
         this.location = location;
-        this.categoryId = categoryId;
+        this.categoryName = categoryName;
     }
 
     public int getId() {
@@ -57,12 +58,12 @@ public class ReceiptEntity {
         this.location = location;
     }
 
-    public int getCategoryId() {
-        return categoryId;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     //    public int getYear(){

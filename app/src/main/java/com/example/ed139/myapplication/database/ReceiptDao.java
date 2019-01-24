@@ -15,11 +15,11 @@ public interface ReceiptDao {
     @Query("SELECT * FROM Receipts ORDER BY id")
     List<ReceiptEntity> loadReceipts();
 
-    @Query("SELECT * FROM Receipts WHERE categoryId IS NULL")
+    @Query("SELECT * FROM Receipts WHERE categoryName IS NULL")
     ReceiptEntity findRootCategory();
 
-    @Query("SELECT * FROM Receipts WHERE id=:categoryId")
-    List<ReceiptEntity> findReceiptsForCategory(final int categoryId);
+    @Query("SELECT * FROM Receipts WHERE categoryName=:categoryName")
+    List<ReceiptEntity> findReceiptsForCategory(final String categoryName);
 
     @Query("DELETE FROM Receipts")
     void delete();

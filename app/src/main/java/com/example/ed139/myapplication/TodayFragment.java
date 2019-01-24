@@ -1,7 +1,7 @@
 package com.example.ed139.myapplication;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.ed139.myapplication.adapters.CategoryAdapter;
 import com.example.ed139.myapplication.database.AppDatabase;
-import com.example.ed139.myapplication.database.CategoryWithReceiptsPOJO;
+import com.example.ed139.myapplication.database.CategoryModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class TodayFragment extends Fragment {
     View rootView;
     CategoryAdapter mAdapter;
     RecyclerView mMainRv;
-    List<CategoryWithReceiptsPOJO> categoryWithReceiptsList;
+    List<CategoryModel> mCategoriesList;
 
     @Nullable
     @Override
@@ -44,21 +44,21 @@ public class TodayFragment extends Fragment {
         // Find RecyclerView and set layout
         mMainRv = (RecyclerView) rootView.findViewById(R.id.category_rv);
         mMainRv.setHasFixedSize(false);
-        LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        final LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         mMainRv.setLayoutManager(manager);
 
         // set list of CategoryModel objects on adapter
-        categoryWithReceiptsList = new ArrayList<>();
-        mAdapter = new CategoryAdapter(getContext(), categoryWithReceiptsList);
+        mCategoriesList = new ArrayList<>();
+        mAdapter = new CategoryAdapter(getContext(), mCategoriesList);
 
         // set adapter on RecyclerView
         mMainRv.setAdapter(mAdapter);
 
-        final LiveData<List<CategoryWithReceiptsPOJO>> categories = mDb.categoryDao().loadCategoriesWithReceipts();
-        categories.observe(this, new Observer<List<CategoryWithReceiptsPOJO>>() {
+        MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        viewModel.getCategories().observe(this, new Observer<List<CategoryModel>>() {
             @Override
-            public void onChanged(@Nullable List<CategoryWithReceiptsPOJO> categoryWithReceiptsPOJOS) {
-                mAdapter.setCategoryWithReceiptsData(categoryWithReceiptsPOJOS);
+            public void onChanged(@Nullable List<CategoryModel> categoryModels) {
+                mAdapter.setCategoryData(categoryModels);
             }
         });
     }
