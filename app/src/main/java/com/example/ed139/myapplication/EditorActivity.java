@@ -13,6 +13,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -34,10 +35,10 @@ public class EditorActivity extends AppCompatActivity {
     private static final String LOG_TAG = "EditorActivity";
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    Bitmap photos;
-    private ImageView mImageView;
+
     // Extra for the receipt ID to be received in the intent
     public static final String EXTRA_RECEIPT_ID = "extraTaskId";
+
     // Constant for default task id to be used when not in update mode
     private static final int DEFAULT_RECEIPT_ID = -1;
     private int mReceiptId = DEFAULT_RECEIPT_ID;
@@ -54,8 +55,9 @@ public class EditorActivity extends AppCompatActivity {
     AppDatabase mDb;
     EditText mPriceET;
     EditText mLocationET;
+    Button mButton;
 
-    private String pictureImagePath = "";
+    private ImageView mImageView;
     String mCurrentPhotoPath;
     Uri photoURI;
 
@@ -69,6 +71,7 @@ public class EditorActivity extends AppCompatActivity {
         mPriceET = findViewById(R.id.price_et);
         mLocationET = findViewById(R.id.location_et);
         mImageView = (ImageView) findViewById(R.id.image_view_editor);
+        mButton = (Button) findViewById(R.id.save_button);
 
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
