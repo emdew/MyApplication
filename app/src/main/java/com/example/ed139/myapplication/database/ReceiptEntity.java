@@ -11,6 +11,8 @@ public class ReceiptEntity {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
+    private String image;
+
     // category id
     public String categoryName;
 
@@ -21,13 +23,15 @@ public class ReceiptEntity {
     private String location;
 
     @Ignore
-    public ReceiptEntity(Long price, String location, String categoryName) {
+    public ReceiptEntity(String image, Long price, String location, String categoryName) {
+        this.image = image;
         this.price = price;
         this.location = location;
         this.categoryName = categoryName;
     }
 
-    public ReceiptEntity(int id, Long price, String location, String categoryName) {
+    public ReceiptEntity(int id, String image, Long price, String location, String categoryName) {
+        this.image = image;
         this.id = id;
         this.price = price;
         this.location = location;
@@ -40,6 +44,14 @@ public class ReceiptEntity {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public Long getPrice() {

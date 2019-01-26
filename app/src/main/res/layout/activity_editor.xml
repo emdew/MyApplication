@@ -11,6 +11,23 @@
         android:orientation="vertical"
         tools:context=".EditorActivity">
 
+        <!-- Image field -->
+        <ImageView
+            android:id="@+id/image_view_editor"
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+
+        <Button
+            android:id="@+id/camera_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="takePicture"
+            android:paddingLeft="16dp"
+            android:text="Take a picture \n of the item"
+            android:textAllCaps="false" />
+
         <EditText
             android:id="@+id/price_et"
             style="@style/EditorFieldStyle"

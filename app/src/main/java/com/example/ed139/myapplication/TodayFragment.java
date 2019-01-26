@@ -2,6 +2,7 @@ package com.example.ed139.myapplication;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,13 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.ed139.myapplication.adapters.CategoryAdapter;
+import com.example.ed139.myapplication.adapters.ReceiptsAdapter;
 import com.example.ed139.myapplication.database.AppDatabase;
 import com.example.ed139.myapplication.database.CategoryModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TodayFragment extends Fragment {
+public class TodayFragment extends Fragment implements ReceiptsAdapter.ItemClickListener{
 
     AppDatabase mDb;
     View rootView;
@@ -49,7 +51,7 @@ public class TodayFragment extends Fragment {
 
         // set list of CategoryModel objects on adapter
         mCategoriesList = new ArrayList<>();
-        mAdapter = new CategoryAdapter(getContext(), mCategoriesList);
+        mAdapter = new CategoryAdapter(getContext(), mCategoriesList, this);
 
         // set adapter on RecyclerView
         mMainRv.setAdapter(mAdapter);
@@ -63,10 +65,10 @@ public class TodayFragment extends Fragment {
         });
     }
 
-//    @Override
-//    public void onItemClickListener(int receiptId) {
-//        Intent intent = new Intent(getContext(), EditorActivity.class);
-//        intent.putExtra(EditorActivity.EXTRA_RECEIPT_ID, receiptId);
-//        startActivity(intent);
-//    }
+    @Override
+    public void onItemClickListener(int itemId) {
+        Intent intent = new Intent(getActivity(), EditorActivity.class);
+        intent.putExtra(EditorActivity.EXTRA_RECEIPT_ID, itemId);
+        startActivity(intent);
+    }
 }

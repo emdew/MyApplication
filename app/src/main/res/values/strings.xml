@@ -20,8 +20,8 @@
     <!-- value in SharedPreferences for highest rated option [CHAR LIMIT=NONE] -->
     <string name="pref_highest_rated_key" translatable="false">top_rated</string>
 
-    <!-- Radio Button Strings -->
-    <string name="groceries">groceries</string>
-    <string name="going_out">going out</string>
-    <string name="coffee">coffee shop</string>
+    <!-- Settings String -->
+    <string name="add_category">Add Category</string>
+
+
 </resources>
