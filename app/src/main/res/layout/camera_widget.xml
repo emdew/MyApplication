@@ -4,13 +4,13 @@
     android:background="#09C"
     android:padding="@dimen/widget_margin">
 
-    <ImageView
+    <Button
         android:id="@+id/appwidget_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_margin="8dp"
-        android:src="@mipmap/ic_camera_widget_round" />
+        android:src="@mipmap/ic_camera_widget_round"/>
 
 </RelativeLayout>

@@ -11,26 +11,26 @@ public class ReceiptEntity {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    private String image;
-
     // category id
     public String categoryName;
 
+    private String image;
+
     // price
-    private Long price;
+    private Double price;
 
     // location
     private String location;
 
     @Ignore
-    public ReceiptEntity(String image, Long price, String location, String categoryName) {
+    public ReceiptEntity(String image, Double price, String location, String categoryName) {
         this.image = image;
         this.price = price;
         this.location = location;
         this.categoryName = categoryName;
     }
 
-    public ReceiptEntity(int id, String image, Long price, String location, String categoryName) {
+    public ReceiptEntity(int id, String image, Double price, String location, String categoryName) {
         this.image = image;
         this.id = id;
         this.price = price;
@@ -54,11 +54,11 @@ public class ReceiptEntity {
         this.image = image;
     }
 
-    public Long getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -78,43 +78,4 @@ public class ReceiptEntity {
         this.categoryName = categoryName;
     }
 
-    //    public int getYear(){
-//        return year;
-//    }
-//
-//    public void setYear(int year){
-//        this.year = year;
-//    }
-//
-//    public int getMonth(){
-//        return month;
-//    }
-//
-//    public void setMonth(int month){
-//        this.month = month;
-//    }
-//
-//    public int getDay(){
-//        return day;
-//    }
-//
-//    public void setDay(int day){
-//        this.day = day;
-//    }
-//
-//    public int getHour(){
-//        return hour;
-//    }
-//
-//    public void setHour(int hour){
-//        this.hour = hour;
-//    }
-//
-//    public int getMinute(){
-//        return minute;
-//    }
-//
-//    public void setMinute(int minute){
-//        this.minute = minute;
-//    }
 }

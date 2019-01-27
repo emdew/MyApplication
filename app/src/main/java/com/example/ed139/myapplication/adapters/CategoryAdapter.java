@@ -59,8 +59,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     }
 
     @Override
-    public void onItemClickListener(int itemId) {
-    }
+    public void onItemClickListener(int itemId){}
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -81,7 +80,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(final @NonNull CategoryAdapter.ViewHolder holder, final int i) {
-        holder.categoryTv.setText(mCategoriesList.get(i).getCategory());
+        holder.categoryTv.setText(mCategoriesList.get(i).getCategory() + ": ");
         final String categoryName = mCategoriesList.get(i).getCategory();
 
         holder.receiptRv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
@@ -91,7 +90,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             @Override
             public void run() {
                 mReceiptslist = mDb.receiptDao().findReceiptsForCategory(categoryName);
-                holder.receiptRv.setAdapter(receiptsAdapter);
                 ((Activity) mContext).runOnUiThread(new Runnable() {
                     public void run() {
                         holder.setData(mReceiptslist);
@@ -99,5 +97,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 });
             }
         });
+        holder.receiptRv.setAdapter(receiptsAdapter);
     }
 }

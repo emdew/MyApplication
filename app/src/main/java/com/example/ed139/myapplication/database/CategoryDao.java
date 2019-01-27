@@ -22,8 +22,8 @@ public interface CategoryDao {
     @Query("DELETE FROM ReceiptCategories")
     void delete();
 
-//    @Query("SELECT SUM(price) as total FROM Category")
-//    Long getSumOfPrices();
+    @Query("SELECT SUM(price) FROM Receipts WHERE categoryName=:categoryName")
+    Double getSumOfReceiptsFromSpecificCategory(String categoryName);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertCategory(CategoryModel categoryModel);

@@ -27,6 +27,9 @@ public interface ReceiptDao {
     @Query("SELECT * FROM Receipts WHERE id = :id")
     ReceiptEntity loadReceiptById(int id);
 
+    @Query("SELECT SUM(price) FROM Receipts")
+    Double getTotal();
+
     @Insert
     void insertReceipt(ReceiptEntity receiptEntity);
 

@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.ed139.myapplication.adapters.CategoryAdapter;
 import com.example.ed139.myapplication.database.AppDatabase;
 import com.example.ed139.myapplication.settings.SettingsActivity;
 
@@ -22,9 +23,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private DrawerLayout drawer;
     AppDatabase mDb;
-    //place in shared location
+    // place in shared location
     int MYACTIVITY_REQUEST_CODE = 101;
     NavigationView mNavigationView;
+    CategoryAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,18 +61,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                PackageManager pm = MainActivity.this.getPackageManager();
-//                if (pm.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-//                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-//                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-//                    }
-//                } else {
-//                    Toast.makeText(MainActivity.this, "Sorry! You don't have a camera app.", Toast.LENGTH_SHORT).show();
-//                }
                 Intent intent = new Intent(MainActivity.this, EditorActivity.class);
+                intent.putExtra("Flag", "main_activity");
                 startActivityForResult(intent, MYACTIVITY_REQUEST_CODE);
-                //MainActivity.this.startActivity(intent);
             }
         });
     }
@@ -79,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if ((requestCode == MYACTIVITY_REQUEST_CODE) && (resultCode == Activity.RESULT_OK))
-            //adapter.notifyDataSetChanged();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new TodayFragment()).commit();
             mNavigationView.setCheckedItem(R.id.nav_today);

@@ -13,7 +13,6 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -55,7 +54,7 @@ public class EditorActivity extends AppCompatActivity {
     AppDatabase mDb;
     EditText mPriceET;
     EditText mLocationET;
-    Button mButton;
+    View view;
 
     private ImageView mImageView;
     String mCurrentPhotoPath;
@@ -71,7 +70,6 @@ public class EditorActivity extends AppCompatActivity {
         mPriceET = findViewById(R.id.price_et);
         mLocationET = findViewById(R.id.location_et);
         mImageView = (ImageView) findViewById(R.id.image_view_editor);
-        mButton = (Button) findViewById(R.id.save_button);
 
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
@@ -85,7 +83,8 @@ public class EditorActivity extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra(EXTRA_RECEIPT_ID)) {
+        String checkFlag = intent.getStringExtra(String.valueOf("Flag"));
+        if (intent.hasExtra(EXTRA_RECEIPT_ID)) {
             if (mReceiptId == DEFAULT_RECEIPT_ID) {
                 mReceiptId = intent.getIntExtra(EXTRA_RECEIPT_ID, DEFAULT_RECEIPT_ID);
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
@@ -101,6 +100,10 @@ public class EditorActivity extends AppCompatActivity {
                     }
                 });
             }
+        } else if (checkFlag != null && checkFlag.equals("widget")){
+            takePicture(view);
+        } else if (checkFlag != null && checkFlag.equals("main_activity")){
+            // do nothing
         }
     }
 
@@ -195,7 +198,7 @@ public class EditorActivity extends AppCompatActivity {
         String categoryName = userCreatedList.get(categoryId);
 
         String location = mLocationET.getText().toString();
-        Long price = Long.parseLong(mPriceET.getText().toString());
+        Double price = Double.parseDouble(mPriceET.getText().toString());
 
         // save receipt
         final ReceiptEntity receiptEntity = new ReceiptEntity(mCurrentPhotoPath, price, location, categoryName);

@@ -14,6 +14,7 @@ import com.example.ed139.myapplication.database.ReceiptEntity;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.ViewHolder>{
@@ -21,7 +22,7 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.ViewHo
     // Member variable to handle item clicks
     private ItemClickListener mItemClickListener;
     private List<ReceiptEntity> mReceiptsList;
-    ReceiptEntity mReceipt;
+    private ReceiptEntity mReceipt;
     private Context mContext;
 
     public ReceiptsAdapter(Context context, List<ReceiptEntity> receiptsList, final ItemClickListener listener) {
@@ -82,16 +83,16 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ReceiptsAdapter.ViewHolder viewHolder, int i) {
+        DecimalFormat format = new DecimalFormat("0.00");
         mReceipt = mReceiptsList.get(i);
         String imageString = mReceipt.getImage();
-        File file = new File(imageString);
-
-        //Uri imageUri = Uri.parse(imageString);
-
-        Picasso.get().load(file).into(viewHolder.imageView);
-
-        //viewHolder.imageView.setImageResource(R.mipmap.ic_launcher_round);
-        viewHolder.priceTv.setText(String.valueOf(mReceipt.getPrice()));
+        if (imageString != null) {
+            File file = new File(imageString);
+            Picasso.get().load(file).into(viewHolder.imageView);
+        } else {
+            viewHolder.imageView.setImageResource(R.mipmap.ic_launcher_round);
+        }
+        viewHolder.priceTv.setText(String.valueOf(format.format(mReceipt.getPrice())));
         viewHolder.locationTv.setText(mReceipt.getLocation());
     }
 }
