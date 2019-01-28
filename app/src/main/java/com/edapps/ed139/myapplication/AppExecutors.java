@@ -1,4 +1,4 @@
-package com.example.ed139.myapplication;
+package com.edapps.ed139.myapplication;
 
 import android.os.Handler;
 import android.os.Looper;

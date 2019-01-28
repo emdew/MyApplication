@@ -1,10 +1,10 @@
-package com.example.ed139.myapplication.settings;
+package com.edapps.ed139.myapplication.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.preference.PreferenceManager;
 
-import com.example.ed139.myapplication.R;
+import com.edapps.ed139.myapplication.R;
 
 public class DateExpirationPreference {
 

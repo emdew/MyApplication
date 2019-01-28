@@ -1,4 +1,4 @@
-package com.example.ed139.myapplication.adapters;
+package com.edapps.ed139.myapplication.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.ed139.myapplication.R;
-import com.example.ed139.myapplication.database.ReceiptEntity;
+import com.edapps.ed139.myapplication.database.ReceiptEntity;
+import com.edapps.ed139.myapplication.R;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -45,11 +45,8 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        if(mReceiptsList!=null) {
-            return mReceiptsList.size();
-        } else{
-            return 0;
-        }
+        // condition ? if : else
+        return (mReceiptsList != null) ? mReceiptsList.size(): 0;
     }
 //
 //    public interface ItemClickListener {

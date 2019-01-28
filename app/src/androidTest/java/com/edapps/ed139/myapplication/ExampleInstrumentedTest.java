@@ -1,4 +1,4 @@
-package com.example.ed139.myapplication;
+package com.edapps.ed139.myapplication;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

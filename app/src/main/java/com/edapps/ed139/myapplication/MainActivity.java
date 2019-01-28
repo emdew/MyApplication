@@ -1,4 +1,4 @@
-package com.example.ed139.myapplication;
+package com.edapps.ed139.myapplication;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,9 +15,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.ed139.myapplication.adapters.CategoryAdapter;
-import com.example.ed139.myapplication.database.AppDatabase;
-import com.example.ed139.myapplication.settings.SettingsActivity;
+import com.edapps.ed139.myapplication.adapters.CategoryAdapter;
+import com.edapps.ed139.myapplication.database.AppDatabase;
+import com.edapps.ed139.myapplication.settings.SettingsActivity;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     int MYACTIVITY_REQUEST_CODE = 101;
     NavigationView mNavigationView;
     CategoryAdapter mAdapter;
+    private Tracker mTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         // database instance for reset button below
         mDb = AppDatabase.getInstance((this.getApplicationContext()));
@@ -66,6 +70,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivityForResult(intent, MYACTIVITY_REQUEST_CODE);
             }
         });
+
+        GoogleAnalyticsApplication application = (GoogleAnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mTracker.setScreenName("Main Activity");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override

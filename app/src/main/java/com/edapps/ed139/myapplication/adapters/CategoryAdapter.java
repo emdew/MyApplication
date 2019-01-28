@@ -1,4 +1,4 @@
-package com.example.ed139.myapplication.adapters;
+package com.edapps.ed139.myapplication.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,11 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.ed139.myapplication.AppExecutors;
-import com.example.ed139.myapplication.R;
-import com.example.ed139.myapplication.database.AppDatabase;
-import com.example.ed139.myapplication.database.CategoryModel;
-import com.example.ed139.myapplication.database.ReceiptEntity;
+import com.edapps.ed139.myapplication.AppExecutors;
+import com.edapps.ed139.myapplication.database.AppDatabase;
+import com.edapps.ed139.myapplication.database.CategoryModel;
+import com.edapps.ed139.myapplication.database.ReceiptEntity;
+import com.edapps.ed139.myapplication.R;
 
 import java.util.List;
 
@@ -80,12 +80,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(final @NonNull CategoryAdapter.ViewHolder holder, final int i) {
-        holder.categoryTv.setText(mCategoriesList.get(i).getCategory() + ": ");
+        
         final String categoryName = mCategoriesList.get(i).getCategory();
-
-        holder.receiptRv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
-        holder.receiptRv.setHasFixedSize(true);
-        holder.receiptRv.setNestedScrollingEnabled(true);
+        String categoryNamePlusColon = categoryName + ": ";
+        holder.categoryTv.setText(categoryNamePlusColon);
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -97,6 +95,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 });
             }
         });
+        holder.receiptRv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+        holder.receiptRv.setHasFixedSize(true);
+        holder.receiptRv.setNestedScrollingEnabled(true);
         holder.receiptRv.setAdapter(receiptsAdapter);
     }
 }

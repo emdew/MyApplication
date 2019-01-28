@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.ed139.myapplication">
+    package="com.edapps.ed139.myapplication">
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -10,14 +10,18 @@
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="18" />
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <application
+        android:name=".GoogleAnalyticsApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppBaseTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name="com.edapps.ed139.myapplication.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,20 +29,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".EditorActivity"
-            android:theme="@style/AppTheme"></activity>
+            android:name="com.edapps.ed139.myapplication.EditorActivity"
+            android:theme="@style/AppTheme"/>
         <activity
-            android:name=".settings.SettingsActivity"
-            android:parentActivityName=".MainActivity"
+            android:name="com.edapps.ed139.myapplication.settings.SettingsActivity"
+            android:parentActivityName="com.edapps.ed139.myapplication.MainActivity"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value="com.edapps.ed139.myapplication.MainActivity" />
         </activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.example.ed139.myapplication"
+            android:authorities="com.edapps.ed139.myapplication"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -46,7 +50,7 @@
                 android:resource="@xml/file_paths"/>
         </provider>
 
-        <receiver android:name=".CameraWidget">
+        <receiver android:name="com.edapps.ed139.myapplication.CameraWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

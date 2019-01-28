@@ -1,4 +1,4 @@
-package com.example.ed139.myapplication;
+package com.edapps.ed139.myapplication;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -14,10 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.ed139.myapplication.adapters.CategoryAdapter;
-import com.example.ed139.myapplication.adapters.ReceiptsAdapter;
-import com.example.ed139.myapplication.database.AppDatabase;
-import com.example.ed139.myapplication.database.CategoryModel;
+import com.edapps.ed139.myapplication.adapters.CategoryAdapter;
+import com.edapps.ed139.myapplication.adapters.ReceiptsAdapter;
+import com.edapps.ed139.myapplication.database.AppDatabase;
+import com.edapps.ed139.myapplication.database.CategoryModel;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -45,11 +45,16 @@ public class TodayFragment extends Fragment implements ReceiptsAdapter.ItemClick
     private void setupMainUi() {
 
         final DecimalFormat format = new DecimalFormat("0.00");
+
+
         // get the sum of all price columns
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                mTotalTextView.setText(String.valueOf(format.format(mDb.receiptDao().getTotal())));
+                Double x = mDb.receiptDao().getTotal();
+                if(x != null) {
+                    mTotalTextView.setText(String.valueOf(format.format(mDb.receiptDao().getTotal())));
+                }
             }
         });
 

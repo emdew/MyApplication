@@ -1,4 +1,4 @@
-package com.example.ed139.myapplication.settings;
+package com.edapps.ed139.myapplication.settings;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,10 +7,10 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.example.ed139.myapplication.AppExecutors;
-import com.example.ed139.myapplication.R;
-import com.example.ed139.myapplication.database.AppDatabase;
-import com.example.ed139.myapplication.database.CategoryModel;
+import com.edapps.ed139.myapplication.AppExecutors;
+import com.edapps.ed139.myapplication.database.AppDatabase;
+import com.edapps.ed139.myapplication.R;
+import com.edapps.ed139.myapplication.database.CategoryModel;
 
 import java.util.ArrayList;
 import java.util.List;

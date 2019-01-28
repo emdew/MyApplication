@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".EditorActivity">
+        tools:context="com.edapps.ed139.myapplication.EditorActivity">
 
         <!-- Image field -->
         <ImageView
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:onClick="takePicture"
-            android:text="Take a picture"
+            android:text="@string/take_a_picture"
             android:textAllCaps="false" />
 
         <EditText
@@ -32,7 +32,7 @@
             style="@style/EditorFieldStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="price?"
+            android:hint="@string/price_hint"
             android:inputType="textCapWords" />
 
         <EditText
@@ -40,7 +40,7 @@
             style="@style/EditorFieldStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="location?"
+            android:hint="@string/location_hint"
             android:inputType="textCapWords" />
 
         <LinearLayout

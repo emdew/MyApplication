@@ -1,4 +1,4 @@
-package com.example.ed139.myapplication.database;
+package com.edapps.ed139.myapplication.database;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
@@ -23,19 +23,20 @@ public class ReceiptEntity {
     private String location;
 
     @Ignore
-    public ReceiptEntity(String image, Double price, String location, String categoryName) {
+    public ReceiptEntity(String categoryName, String image, Double price, String location) {
+        this.categoryName = categoryName;
         this.image = image;
         this.price = price;
         this.location = location;
-        this.categoryName = categoryName;
     }
 
-    public ReceiptEntity(int id, String image, Double price, String location, String categoryName) {
-        this.image = image;
+    public ReceiptEntity(int id, String categoryName, String image, Double price, String location) {
         this.id = id;
+        this.categoryName = categoryName;
+        this.image = image;
         this.price = price;
         this.location = location;
-        this.categoryName = categoryName;
+
     }
 
     public int getId() {
@@ -44,6 +45,14 @@ public class ReceiptEntity {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public String getImage() {
@@ -70,12 +79,6 @@ public class ReceiptEntity {
         this.location = location;
     }
 
-    public String getCategoryName() {
-        return categoryName;
-    }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
 
 }

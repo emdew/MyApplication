@@ -26,5 +26,17 @@
     <string name="add_widget">Add widget</string>
 
     <string name="save_button">Save!</string>
+    <string name="take_a_picture">Take a picture</string>
+    <string name="price_hint">price?</string>
+    <string name="location_hint">location?</string>
+    <string name="category_hint">category?</string>
+    <string name="add_new_item">Add New Item</string>
+    <string name="save_items">Save Items</string>
+    <string name="image_view_desc">After taking a picture, it will appear here</string>
+
+    <!-- Unsaved changes diaglog -->
+    <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+    <string name="discard">Discard</string>
+    <string name="keep_editing">Keep Editing</string>
 
 </resources>

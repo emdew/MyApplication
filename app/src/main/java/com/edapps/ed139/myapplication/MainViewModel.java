@@ -1,13 +1,13 @@
-package com.example.ed139.myapplication;
+package com.edapps.ed139.myapplication;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
-import com.example.ed139.myapplication.database.AppDatabase;
-import com.example.ed139.myapplication.database.CategoryModel;
-import com.example.ed139.myapplication.database.ReceiptEntity;
+import com.edapps.ed139.myapplication.database.AppDatabase;
+import com.edapps.ed139.myapplication.database.ReceiptEntity;
+import com.edapps.ed139.myapplication.database.CategoryModel;
 
 import java.util.List;
 

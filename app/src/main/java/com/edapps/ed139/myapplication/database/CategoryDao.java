@@ -1,4 +1,4 @@
-package com.example.ed139.myapplication.database;
+package com.edapps.ed139.myapplication.database;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;

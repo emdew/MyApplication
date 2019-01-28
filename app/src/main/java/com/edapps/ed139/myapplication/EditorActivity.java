@@ -1,7 +1,9 @@
-package com.example.ed139.myapplication;
+package com.edapps.ed139.myapplication;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.arch.lifecycle.LiveData;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,17 +11,21 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.NavUtils;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.example.ed139.myapplication.database.AppDatabase;
-import com.example.ed139.myapplication.database.CategoryModel;
-import com.example.ed139.myapplication.database.ReceiptEntity;
+import com.edapps.ed139.myapplication.database.AppDatabase;
+import com.edapps.ed139.myapplication.database.CategoryModel;
+import com.edapps.ed139.myapplication.database.ReceiptEntity;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -28,6 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class EditorActivity extends AppCompatActivity {
 
@@ -54,22 +61,45 @@ public class EditorActivity extends AppCompatActivity {
     AppDatabase mDb;
     EditText mPriceET;
     EditText mLocationET;
+    Button mPhotoButton;
     View view;
 
     private ImageView mImageView;
     String mCurrentPhotoPath;
     Uri photoURI;
 
+    // Boolean flag that keeps track of whether the item has been edited (true) or not (false)
+    private boolean mItemHasChanged = false;
+
+    /**
+     * OnTouchListener that listens for any user touches on a View, implying that they are modifying
+     * the view, and we change the mItemHasChanged boolean to true.
+     */
+    private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            mItemHasChanged = true;
+            return false;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         mDb = AppDatabase.getInstance(getApplicationContext());
         listView = findViewById(R.id.user_created_list);
         mPriceET = findViewById(R.id.price_et);
         mLocationET = findViewById(R.id.location_et);
         mImageView = (ImageView) findViewById(R.id.image_view_editor);
+        mPhotoButton = findViewById(R.id.camera_button);
+
+        mPriceET.setOnTouchListener(mTouchListener);
+        mLocationET.setOnTouchListener(mTouchListener);
+        mPhotoButton.setOnTouchListener(mTouchListener);
 
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
@@ -134,7 +164,7 @@ public class EditorActivity extends AppCompatActivity {
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
-                photoURI = FileProvider.getUriForFile(this, "com.example.ed139.myapplication", photoFile);
+                photoURI = FileProvider.getUriForFile(this, "com.edapps.ed139.myapplication", photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
@@ -164,13 +194,6 @@ public class EditorActivity extends AppCompatActivity {
 
             Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
             mImageView.setImageBitmap(bitmap);
-            //File imgFile = new  File(pictureImagePath);
-            //if(imgFile.exists()){
-//                Bundle extras = data.getExtras();
-//                //photos = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-//                photos = (Bitmap) extras.get("data");
-//                mImageView.setImageBitmap(photos);
-            //}
         }
     }
 
@@ -196,12 +219,11 @@ public class EditorActivity extends AppCompatActivity {
         // checked id and get name from checked id
         int categoryId = listView.getCheckedItemPosition();
         String categoryName = userCreatedList.get(categoryId);
-
-        String location = mLocationET.getText().toString();
         Double price = Double.parseDouble(mPriceET.getText().toString());
+        String location = mLocationET.getText().toString();
 
         // save receipt
-        final ReceiptEntity receiptEntity = new ReceiptEntity(mCurrentPhotoPath, price, location, categoryName);
+        final ReceiptEntity receiptEntity = new ReceiptEntity(categoryName, mCurrentPhotoPath, price, location);
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -218,5 +240,55 @@ public class EditorActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void showUnsavedChangesDialog(DialogInterface.OnClickListener discardButtonClickListener) {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the postivie and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.unsaved_changes_dialog_msg);
+        builder.setPositiveButton(R.string.discard, discardButtonClickListener);
+        builder.setNegativeButton(R.string.keep_editing, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Keep editing" button, so dismiss the dialog
+                // and continue editing the item.
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // If the item hasn't changed, continue with navigating up to parent activity
+                // which is the {@link CatalogActivity}.
+                if (!mItemHasChanged) {
+                    NavUtils.navigateUpFromSameTask(EditorActivity.this);
+                    return true;
+                }
+                // Otherwise if there are unsaved changes, setup a dialog to warn the user.
+                // Create a click listener to handle the user confirming that
+                // changes should be discarded.
+                DialogInterface.OnClickListener discardButtonClickListener =
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                // User clicked "Discard" button, navigate to parent activity.
+                                NavUtils.navigateUpFromSameTask(EditorActivity.this);
+                            }
+                        };
+
+                // Show a dialog that notifies the user they have unsaved changes
+                showUnsavedChangesDialog(discardButtonClickListener);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
