@@ -13,8 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.edapps.ed139.myapplication.database.MainViewModel;
+import com.edapps.ed139.myapplication.MainViewModelFactory;
 import com.edapps.ed139.myapplication.R;
+import com.edapps.ed139.myapplication.ReceiptsViewModel;
 import com.edapps.ed139.myapplication.database.AppDatabase;
 import com.edapps.ed139.myapplication.database.CategoryModel;
 import com.edapps.ed139.myapplication.database.ReceiptEntity;
@@ -81,8 +82,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         String categoryNamePlusColon = categoryName + ": ";
         holder.categoryTv.setText(categoryNamePlusColon);
 
-        MainViewModel viewModel = ViewModelProviders.of((FragmentActivity) mContext).get(MainViewModel.class);
-        viewModel.getReceipts().observe((FragmentActivity) mContext, new Observer<List<ReceiptEntity>>() {
+        //MainViewModel viewModel
+        MainViewModelFactory factory = new MainViewModelFactory(mDb, categoryName);
+        final ReceiptsViewModel viewModel = ViewModelProviders.of((FragmentActivity) mContext, factory).get(ReceiptsViewModel.class);
+        viewModel.getReceipt().observe((FragmentActivity) mContext, new Observer<List<ReceiptEntity>>() {
             @Override
             public void onChanged(@Nullable List<ReceiptEntity> receiptEntities) {
                 holder.setData(receiptEntities);

@@ -80,6 +80,7 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.ViewHo
     @Override
     public void onBindViewHolder(final @NonNull ReceiptsAdapter.ViewHolder viewHolder, int i) {
         mReceipt = mReceiptsList.get(i);
+        String categoryName = mReceipt.getCategoryName();
         DecimalFormat format = new DecimalFormat("0.00");
         String imageString = mReceipt.getImage();
         if (imageString != null) {

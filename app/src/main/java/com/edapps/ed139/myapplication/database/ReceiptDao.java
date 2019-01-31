@@ -20,7 +20,7 @@ public interface ReceiptDao {
     ReceiptEntity findRootCategory();
 
     @Query("SELECT * FROM Receipts WHERE categoryName=:categoryName")
-    List<ReceiptEntity> findReceiptsForCategory(final String categoryName);
+    LiveData<List<ReceiptEntity>> findReceiptsForCategory(final String categoryName);
 
     @Query("DELETE FROM Receipts")
     void delete();
