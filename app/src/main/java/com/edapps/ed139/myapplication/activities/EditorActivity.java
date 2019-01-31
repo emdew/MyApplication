@@ -1,4 +1,4 @@
-package com.edapps.ed139.myapplication;
+package com.edapps.ed139.myapplication.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -23,6 +23,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.edapps.ed139.myapplication.AppExecutors;
+import com.edapps.ed139.myapplication.R;
 import com.edapps.ed139.myapplication.database.AppDatabase;
 import com.edapps.ed139.myapplication.database.CategoryModel;
 import com.edapps.ed139.myapplication.database.ReceiptEntity;
@@ -94,7 +96,7 @@ public class EditorActivity extends AppCompatActivity {
         listView = findViewById(R.id.user_created_list);
         mPriceET = findViewById(R.id.price_et);
         mLocationET = findViewById(R.id.location_et);
-        mImageView = (ImageView) findViewById(R.id.image_view_editor);
+        mImageView = findViewById(R.id.image_view_editor);
         mPhotoButton = findViewById(R.id.camera_button);
 
         mPriceET.setOnTouchListener(mTouchListener);
@@ -106,7 +108,7 @@ public class EditorActivity extends AppCompatActivity {
             public void run() {
                 // load categories into listview
                 userCreatedList = mDb.categoryDao().getCategories();
-                adapter = new ArrayAdapter<String>(EditorActivity.this, android.R.layout.simple_list_item_multiple_choice, userCreatedList);
+                adapter = new ArrayAdapter<>(EditorActivity.this, android.R.layout.simple_list_item_multiple_choice, userCreatedList);
                 listView.setAdapter(adapter);
                 listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
             }
@@ -132,8 +134,6 @@ public class EditorActivity extends AppCompatActivity {
             }
         } else if (checkFlag != null && checkFlag.equals("widget")){
             takePicture(view);
-        } else if (checkFlag != null && checkFlag.equals("main_activity")){
-            // do nothing
         }
     }
 

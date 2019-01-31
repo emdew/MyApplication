@@ -1,8 +1,11 @@
 package com.edapps.ed139.myapplication.adapters;
 
-import android.app.Activity;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,34 +13,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.edapps.ed139.myapplication.AppExecutors;
+import com.edapps.ed139.myapplication.database.MainViewModel;
+import com.edapps.ed139.myapplication.R;
 import com.edapps.ed139.myapplication.database.AppDatabase;
 import com.edapps.ed139.myapplication.database.CategoryModel;
 import com.edapps.ed139.myapplication.database.ReceiptEntity;
-import com.edapps.ed139.myapplication.R;
 
 import java.util.List;
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> implements ReceiptsAdapter.ItemClickListener {
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> implements ReceiptsAdapter.ItemClickListener{
 
-    ReceiptsAdapter.ItemClickListener mListener;
-    List<CategoryModel> mCategoriesList;
+    public static final String LOG_TAG = "CategoryAdapter";
+    private ReceiptsAdapter.ItemClickListener mListener;
+    private List<CategoryModel> mCategoriesList;
     private List<ReceiptEntity> mReceiptslist;
-    ReceiptsAdapter receiptsAdapter;
-    RecyclerView mRecyclerView;
-    Context mContext;
-    AppDatabase mDb;
+    private ReceiptsAdapter receiptsAdapter;
+    private Context mContext;
+    private AppDatabase mDb;
 
     public CategoryAdapter(Context context, List<CategoryModel> categoriesList, ReceiptsAdapter.ItemClickListener listener) {
         mContext = context;
         mCategoriesList = categoriesList;
         mListener = listener;
-    }
-
-    @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-        mRecyclerView = recyclerView;
     }
 
     @NonNull
@@ -64,9 +61,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView categoryTv;
-        RecyclerView receiptRv;
+        private RecyclerView receiptRv;
 
-        public ViewHolder(View itemView) {
+        private ViewHolder(View itemView) {
             super(itemView);
             categoryTv = itemView.findViewById(R.id.category_tv);
             receiptRv = itemView.findViewById(R.id.receipts_rv);
@@ -80,21 +77,26 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(final @NonNull CategoryAdapter.ViewHolder holder, final int i) {
-        
         final String categoryName = mCategoriesList.get(i).getCategory();
         String categoryNamePlusColon = categoryName + ": ";
         holder.categoryTv.setText(categoryNamePlusColon);
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+
+        MainViewModel viewModel = ViewModelProviders.of((FragmentActivity) mContext).get(MainViewModel.class);
+        viewModel.getReceipts().observe((FragmentActivity) mContext, new Observer<List<ReceiptEntity>>() {
             @Override
-            public void run() {
-                mReceiptslist = mDb.receiptDao().findReceiptsForCategory(categoryName);
-                ((Activity) mContext).runOnUiThread(new Runnable() {
-                    public void run() {
-                        holder.setData(mReceiptslist);
-                    }
-                });
+            public void onChanged(@Nullable List<ReceiptEntity> receiptEntities) {
+                holder.setData(receiptEntities);
             }
         });
+//        LiveData<List<ReceiptEntity>> receipts = mDb.receiptDao().findReceiptsForCategory(categoryName);
+//        receipts.observe(((FragmentActivity) mContext), new Observer<List<ReceiptEntity>>() {
+//            @Override
+//            public void onChanged(@Nullable List<ReceiptEntity> receiptEntities) {
+//                Log.d(LOG_TAG, "Receiving data from view model");
+//                receiptEntities = mReceiptslist;
+//
+//            }
+//        });
         holder.receiptRv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
         holder.receiptRv.setHasFixedSize(true);
         holder.receiptRv.setNestedScrollingEnabled(true);

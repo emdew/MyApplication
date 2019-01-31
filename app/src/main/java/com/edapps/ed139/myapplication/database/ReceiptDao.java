@@ -1,5 +1,6 @@
 package com.edapps.ed139.myapplication.database;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -13,7 +14,7 @@ import java.util.List;
 public interface ReceiptDao {
 
     @Query("SELECT * FROM Receipts ORDER BY id")
-    List<ReceiptEntity> loadReceipts();
+    LiveData<List<ReceiptEntity>> loadReceipts();
 
     @Query("SELECT * FROM Receipts WHERE categoryName IS NULL")
     ReceiptEntity findRootCategory();

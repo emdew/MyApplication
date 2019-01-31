@@ -9,8 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.edapps.ed139.myapplication.database.ReceiptEntity;
 import com.edapps.ed139.myapplication.R;
+import com.edapps.ed139.myapplication.database.AppDatabase;
+import com.edapps.ed139.myapplication.database.ReceiptEntity;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -24,6 +25,11 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.ViewHo
     private List<ReceiptEntity> mReceiptsList;
     private ReceiptEntity mReceipt;
     private Context mContext;
+    private AppDatabase mDb;
+
+    public interface ItemClickListener {
+        void onItemClickListener(int clickedItemIndex);
+    }
 
     public ReceiptsAdapter(Context context, List<ReceiptEntity> receiptsList, final ItemClickListener listener) {
         mContext = context;
@@ -40,6 +46,7 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.ViewHo
     @Override
     public ReceiptsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.receipts_rv_item, viewGroup, false);
+        mDb = AppDatabase.getInstance(mContext);
         return new ViewHolder(view);
     }
 
@@ -47,14 +54,6 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.ViewHo
     public int getItemCount() {
         // condition ? if : else
         return (mReceiptsList != null) ? mReceiptsList.size(): 0;
-    }
-//
-//    public interface ItemClickListener {
-//        void onItemClickListener(int receiptId);
-//    }
-
-    public interface ItemClickListener {
-        void onItemClickListener(int clickedItemIndex);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -65,9 +64,9 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.ViewHo
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView = (ImageView) itemView.findViewById(R.id.today_image_view);
-            priceTv = (TextView) itemView.findViewById(R.id.price_tv);
-            locationTv = (TextView) itemView.findViewById(R.id.location_tv);
+            imageView = itemView.findViewById(R.id.today_image_view);
+            priceTv = itemView.findViewById(R.id.price_tv);
+            locationTv = itemView.findViewById(R.id.location_tv);
             itemView.setOnClickListener(this);
         }
 
@@ -79,9 +78,9 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ReceiptsAdapter.ViewHolder viewHolder, int i) {
-        DecimalFormat format = new DecimalFormat("0.00");
+    public void onBindViewHolder(final @NonNull ReceiptsAdapter.ViewHolder viewHolder, int i) {
         mReceipt = mReceiptsList.get(i);
+        DecimalFormat format = new DecimalFormat("0.00");
         String imageString = mReceipt.getImage();
         if (imageString != null) {
             File file = new File(imageString);

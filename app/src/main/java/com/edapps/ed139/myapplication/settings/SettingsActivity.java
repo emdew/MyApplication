@@ -54,13 +54,13 @@ public class SettingsActivity extends AppCompatActivity {
         mDb = AppDatabase.getInstance(getApplicationContext());
 
         // EditText to add categories
-        mEditText = (EditText) findViewById(R.id.et_no);
+        mEditText = findViewById(R.id.et_no);
 
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
                 userCreatedList = mDb.categoryDao().getCategories();
-                ArrayAdapter<String> adapterForUserList = new ArrayAdapter <String>(SettingsActivity.this, android.R.layout.simple_list_item_1, userCreatedList);
+                ArrayAdapter<String> adapterForUserList = new ArrayAdapter<>(SettingsActivity.this, android.R.layout.simple_list_item_1, userCreatedList);
                 settingsList.setAdapter(adapterForUserList);
             }
         });
@@ -87,7 +87,7 @@ public class SettingsActivity extends AppCompatActivity {
         // add a new category to the list
         String newCategory = mEditText.getText().toString();
         userCreatedList.add(newCategory);
-        ArrayAdapter<String> adapter = new ArrayAdapter <String>(this, android.R.layout.simple_list_item_1, userCreatedList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, userCreatedList);
         settingsList.setAdapter(adapter);
 
         // save new category to the database

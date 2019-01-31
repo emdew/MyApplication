@@ -1,4 +1,4 @@
-package com.edapps.ed139.myapplication;
+package com.edapps.ed139.myapplication.database;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
@@ -6,8 +6,8 @@ import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
 import com.edapps.ed139.myapplication.database.AppDatabase;
-import com.edapps.ed139.myapplication.database.ReceiptEntity;
 import com.edapps.ed139.myapplication.database.CategoryModel;
+import com.edapps.ed139.myapplication.database.ReceiptEntity;
 
 import java.util.List;
 
@@ -20,13 +20,14 @@ public class MainViewModel extends AndroidViewModel {
         super(application);
         AppDatabase appDatabase = AppDatabase.getInstance(this.getApplication());
         categories = appDatabase.categoryDao().loadCategories();
-    }
-
-    public LiveData<List<CategoryModel>> getCategories() {
-        return categories;
+        receipts = appDatabase.receiptDao().loadReceipts();
     }
 
     public LiveData<List<ReceiptEntity>> getReceipts() {
         return receipts;
+    }
+
+    public LiveData<List<CategoryModel>> getCategories() {
+        return categories;
     }
 }
